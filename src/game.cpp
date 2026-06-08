@@ -16,8 +16,8 @@ void Game::run_game() {
     BeginDrawing();
 
     ClearBackground(BLACK);
-    enemy_spawner.update_enemies();
     player.update_player(enemy_spawner.enemies);
+    enemy_spawner.update_enemies();
 
     EndDrawing();
   }

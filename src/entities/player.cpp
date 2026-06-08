@@ -1,5 +1,7 @@
 #include "player.hpp"
 #include "../abilities/bullet.hpp"
+#include "../abilities/fire_aura.hpp"
+#include "../abilities/meteor.hpp"
 #include "enemy.hpp"
 #include <memory>
 #include <raylib.h>
@@ -16,7 +18,9 @@ Player::Player(float x, float y) {
   collider_radius = COLLIDER_RADIUS;
   position = {x, y};
 
-  abilities.push_back(std::make_unique<Bullet>(*this));
+  abilities.push_back(std::make_unique<FireAura>(*this));
+  abilities.push_back(std::make_unique<Meteor>(*this));
+  // abilities.push_back(std::make_unique<Bullet>(*this));
 }
 
 void Player::update_player(std::vector<Enemy> &enemies) {

@@ -67,7 +67,6 @@ void Bullet::check_for_collisions(std::vector<Enemy> &enemies) {
       bool is_colliding = CheckCollisionCircles(
           projectile.position, radius, enemy.position, enemy.collider_radius);
       if (is_colliding) {
-        TraceLog(LOG_INFO, "dam");
         enemy.take_damage(player.damage * damage_multiplier);
         projectile.alive = false;
         break;

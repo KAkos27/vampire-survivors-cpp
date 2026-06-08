@@ -9,11 +9,15 @@ add_executable(vampire_survivors
     src/main.cpp
     src/game.cpp
 
+    src/utils/random.cpp
+
     src/entities/player.cpp
     src/entities/enemy.cpp
     src/entities/enemy_spawner.cpp
 
     src/abilities/bullet.cpp
+    src/abilities/fire_aura.cpp
+    src/abilities/meteor.cpp
 )
 
 target_link_libraries(vampire_survivors raylib)

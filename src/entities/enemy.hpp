@@ -22,7 +22,11 @@ public:
 
 private:
   Player *player;
+  Color color;
   float speed;
+  bool hurt;
+  float hurt_timer;
   void follow_player();
   void check_for_player_hit();
+  void flash_enemy();
 };

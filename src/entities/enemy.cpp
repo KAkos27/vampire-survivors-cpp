@@ -6,6 +6,7 @@
 const float SPEED = 50;
 const float HEALTH = 100;
 const float COLLIDER_RADIUS = 15;
+const float HURT_TIMER = 0.15;
 
 Enemy::Enemy(Player *player) : player(player) {
   speed = SPEED;
@@ -13,12 +14,16 @@ Enemy::Enemy(Player *player) : player(player) {
   position = {200, 200};
   alive = true;
   health = {HEALTH, HEALTH};
+  color = RED;
+  hurt = false;
+  hurt_timer = HURT_TIMER;
 }
 
 void Enemy::update_enemy() {
   follow_player();
   check_for_player_hit();
-  DrawCircleV(position, collider_radius, RED);
+  flash_enemy();
+  DrawCircleV(position, collider_radius, color);
 }
 
 void Enemy::follow_player() {
@@ -30,18 +35,36 @@ void Enemy::follow_player() {
 }
 
 void Enemy::check_for_player_hit() {
-  bool is_colliding = CheckCollisionCircles(
-      position, collider_radius, player->position, player->collider_radius);
-
-  if (is_colliding) {
-    TraceLog(LOG_INFO, "Collision happened");
-  }
+  // bool is_colliding = CheckCollisionCircles(
+  //     position, collider_radius, player->position, player->collider_radius);
+  //
+  // if (is_colliding) {
+  //   TraceLog(LOG_INFO, "Collision happened");
+  // }
 }
 
 void Enemy::take_damage(float damage) {
+  TraceLog(LOG_INFO, "enemy taken damage: %f", damage);
   health.current -= damage;
+  hurt = true;
 
   if (health.current <= 0) {
     alive = false;
+  }
+}
+
+void Enemy::flash_enemy() {
+  if (!hurt) {
+    return;
+  }
+
+  float delta = GetFrameTime();
+  hurt_timer -= delta;
+  color = WHITE;
+
+  if (hurt_timer <= 0) {
+    color = RED;
+    hurt = false;
+    hurt_timer = HURT_TIMER;
   }
 }
