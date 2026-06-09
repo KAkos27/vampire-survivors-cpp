@@ -29,6 +29,12 @@ void EnemySpawner::update_enemies() {
   }
 }
 
+void EnemySpawner::draw_enemies() {
+  for (auto &enemy : enemies) {
+    enemy.draw_enemy();
+  }
+}
+
 void EnemySpawner::delete_dead_enemies() {
   enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
                                [](const Enemy &e) { return !e.alive; }),

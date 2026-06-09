@@ -10,6 +10,7 @@ public:
   EnemySpawner(Player &player);
   std::vector<Enemy> enemies;
   void update_enemies();
+  void draw_enemies();
 
 private:
   Player &player;

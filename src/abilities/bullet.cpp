@@ -1,4 +1,5 @@
 #include "bullet.hpp"
+#include "ability.hpp"
 #include <algorithm>
 #include <raylib.h>
 #include <raymath.h>
@@ -8,7 +9,11 @@ const float RADIUS = 1.5;
 const float DAMAGE_MULTIPLIER = 0.8;
 const float SPEED = 500;
 
-Bullet::Bullet(Player &player) : player(player) {
+Bullet::Bullet(Player &player, bool unlocked) : player(player) {
+  this->is_unlocked = unlocked;
+
+  name = "Bullet";
+  id = BULLET;
   cooldown = COOLDOWN;
   radius = RADIUS;
   damage_multiplier = DAMAGE_MULTIPLIER;
@@ -20,6 +25,12 @@ void Bullet::update(std::vector<Enemy> &enemies) {
   update_projectiles(enemies);
   check_for_collisions(enemies);
   delete_dead_projectiles();
+}
+
+void Bullet::draw() {
+  for (auto &projectile : projectiles) {
+    DrawCircleV(projectile.position, radius, BLUE);
+  }
 }
 
 void Bullet::shoot(std::vector<Enemy> &enemies) {
@@ -56,7 +67,6 @@ void Bullet::update_projectiles(std::vector<Enemy> &enemies) {
     float delta = GetFrameTime();
     projectile.position = Vector2Add(projectile.position,
                                      Vector2Scale(projectile.velocity, delta));
-    DrawCircleV(projectile.position, radius, BLUE);
   }
 }
 
@@ -67,7 +77,7 @@ void Bullet::check_for_collisions(std::vector<Enemy> &enemies) {
       bool is_colliding = CheckCollisionCircles(
           projectile.position, radius, enemy.position, enemy.collider_radius);
       if (is_colliding) {
-        enemy.take_damage(player.damage * damage_multiplier);
+        enemy.take_damage(player.stats.damage * damage_multiplier);
         projectile.alive = false;
         break;
       }

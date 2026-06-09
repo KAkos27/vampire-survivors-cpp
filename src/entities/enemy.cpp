@@ -11,6 +11,7 @@ const float HURT_TIMER = 0.15;
 Enemy::Enemy(Player *player) : player(player) {
   speed = SPEED;
   collider_radius = COLLIDER_RADIUS;
+  xp_drop = 200;
   position = {200, 200};
   alive = true;
   health = {HEALTH, HEALTH};
@@ -23,8 +24,9 @@ void Enemy::update_enemy() {
   follow_player();
   check_for_player_hit();
   flash_enemy();
-  DrawCircleV(position, collider_radius, color);
 }
+
+void Enemy::draw_enemy() { DrawCircleV(position, collider_radius, color); }
 
 void Enemy::follow_player() {
   Vector2 direction = Vector2Subtract(player->position, position);
@@ -50,6 +52,7 @@ void Enemy::take_damage(float damage) {
 
   if (health.current <= 0) {
     alive = false;
+    player->gain_xp(xp_drop);
   }
 }
 

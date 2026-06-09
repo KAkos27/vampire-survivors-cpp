@@ -11,6 +11,9 @@ add_executable(vampire_survivors
 
     src/utils/random.cpp
 
+    src/ui/level_up_event.cpp
+    src/ui/ray_gui_impl.cpp
+
     src/entities/player.cpp
     src/entities/enemy.cpp
     src/entities/enemy_spawner.cpp
@@ -21,3 +24,7 @@ add_executable(vampire_survivors
 )
 
 target_link_libraries(vampire_survivors raylib)
+
+target_include_directories(vampire_survivors PRIVATE
+    src/external/raygui/src
+)

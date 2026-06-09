@@ -15,8 +15,9 @@ struct Projectile {
 class Bullet : public Ability {
 
 public:
-  Bullet(Player &player);
+  Bullet(Player &player, bool unlocked);
   void update(std::vector<Enemy> &enemies) override;
+  void draw() override;
 
 private:
   Player &player;

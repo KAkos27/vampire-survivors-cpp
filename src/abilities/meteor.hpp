@@ -13,8 +13,9 @@ struct MeteorCrater {
 class Meteor : public Ability {
 
 public:
-  Meteor(Player &player);
+  Meteor(Player &player, bool unlocked);
   void update(std::vector<Enemy> &enemies) override;
+  void draw() override;
 
 private:
   Player &player;
@@ -28,6 +29,5 @@ private:
   void strike_meteor(std::vector<Enemy> &enemies);
   void deal_crater_damage(std::vector<Enemy> &enemies);
   void handle_crater_duration();
-  void draw_craters();
   void delete_dead_craters();
 };

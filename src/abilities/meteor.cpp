@@ -1,5 +1,6 @@
 #include "meteor.hpp"
 #include "../utils/random.hpp"
+#include "ability.hpp"
 #include <raylib.h>
 #include <vector>
 
@@ -7,7 +8,11 @@ const float COOLDOWN = 3;
 const float CRATER_DURATION = 5;
 const float CRATER_DAMAGE_TICK_TIMER = 1;
 
-Meteor::Meteor(Player &player) : player(player) {
+Meteor::Meteor(Player &player, bool unlocked) : player(player) {
+  this->is_unlocked = unlocked;
+
+  name = "Meteor";
+  id = METEOR;
   cooldown = COOLDOWN;
   damage_multiplier = 0.8;
 
@@ -22,7 +27,6 @@ void Meteor::update(std::vector<Enemy> &enemies) {
   handle_crater_duration();
   delete_dead_craters();
   deal_crater_damage(enemies);
-  draw_craters();
 }
 
 void Meteor::strike_meteor(std::vector<Enemy> &enemies) {
@@ -43,7 +47,7 @@ void Meteor::strike_meteor(std::vector<Enemy> &enemies) {
   }
 }
 
-void Meteor::draw_craters() {
+void Meteor::draw() {
   for (auto &crater : craters) {
     DrawCircleV(crater.position, crater_radius, ORANGE);
   }
@@ -64,7 +68,7 @@ void Meteor::deal_crater_damage(std::vector<Enemy> &enemies) {
           CheckCollisionCircles(enemy.position, enemy.collider_radius,
                                 crater.position, crater_radius);
       if (is_colliding) {
-        enemy.take_damage(crater_damage_multiplier * player.damage);
+        enemy.take_damage(crater_damage_multiplier * player.stats.damage);
       }
     }
   }

@@ -17,8 +17,10 @@ public:
   EnemyHealth health;
   bool alive;
   float collider_radius;
+  float xp_drop;
   void update_enemy();
   void take_damage(float damage);
+  void draw_enemy();
 
 private:
   Player *player;
