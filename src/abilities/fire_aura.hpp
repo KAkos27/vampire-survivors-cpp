@@ -4,17 +4,26 @@
 #include "ability.hpp"
 #include <vector>
 
+struct FireAuraStats {
+  float radius;
+  float damage_muliplier;
+  float base_tick_time;
+  float tick_time;
+};
+
 class FireAura : public Ability {
 
 public:
   FireAura(Player &player, bool unlocked);
   void update(std::vector<Enemy> &enemies) override;
   void draw() override;
+  void upgrade() override;
 
 private:
   Player &player;
-  float radius;
-  float damage_muliplier;
-  float tick_time;
+  FireAuraStats stats;
   void deal_damage(std::vector<Enemy> &enemies);
+  FireAuraStats get_current_stats();
+  FireAuraStats create_stats(float radius, float damage_muliplier,
+                             float tick_time);
 };

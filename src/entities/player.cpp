@@ -104,7 +104,7 @@ void Player::update_stats() {
 void Player::upgrade_ability(AbilityId id) {
   for (auto &ability : abilities) {
     if (ability->id == id) {
-      ability->is_unlocked = true;
+      ability->upgrade();
     }
   }
 }

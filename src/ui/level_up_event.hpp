@@ -14,6 +14,6 @@ public:
 
 private:
   Player &player;
-  std::vector<AbilityId> ability_candidates_ids;
+  std::vector<AbilityId> ability_candidate_ids;
   bool draw_button(int index);
 };

@@ -6,35 +6,62 @@
 const float TICK_TIME = 1;
 
 FireAura::FireAura(Player &player, bool unlocked) : player(player) {
-  this->is_unlocked = unlocked;
-
   name = "Fire aura";
   id = FIRE_AURA;
-  damage_muliplier = 0.5;
-  radius = 100;
-  tick_time = TICK_TIME;
+  is_unlocked = unlocked;
+  level = 1;
+  stats = get_current_stats();
 }
 
 void FireAura::update(std::vector<Enemy> &enemies) { deal_damage(enemies); }
 
-void FireAura::draw() { DrawCircleV(player.position, radius, ORANGE); }
+void FireAura::draw() { DrawCircleV(player.position, stats.radius, ORANGE); }
+
+void FireAura::upgrade() {
+  if (!is_unlocked) {
+    is_unlocked = true;
+    return;
+  }
+  level++;
+  stats = get_current_stats();
+}
+
+FireAuraStats FireAura::get_current_stats() {
+  switch (level) {
+  case 1:
+    return create_stats(100, 0.5, 1);
+  case 2:
+    return create_stats(120, 0.5, 1);
+  case 3:
+    return create_stats(130, 0.7, 0.75);
+  case 4:
+    return create_stats(130, 0.7, 0.75);
+  default:
+    return create_stats(150, 0.85, 0.5);
+  }
+}
+
+FireAuraStats FireAura::create_stats(float radius, float damage_muliplier,
+                                     float tick_time) {
+  return {radius, damage_muliplier, tick_time, tick_time};
+}
 
 void FireAura::deal_damage(std::vector<Enemy> &enemies) {
   float delta = GetFrameTime();
-  tick_time -= delta;
+  stats.tick_time -= delta;
 
-  if (tick_time > 0) {
+  if (stats.tick_time > 0) {
     return;
   }
 
-  tick_time = TICK_TIME;
+  stats.tick_time = stats.base_tick_time;
 
   for (auto &enemy : enemies) {
     bool is_colliding = CheckCollisionCircles(
-        enemy.position, enemy.collider_radius, player.position, radius);
+        enemy.position, enemy.collider_radius, player.position, stats.radius);
 
     if (is_colliding) {
-      enemy.take_damage(player.stats.damage * damage_muliplier);
+      enemy.take_damage(player.stats.damage * stats.damage_muliplier);
     }
   }
 }

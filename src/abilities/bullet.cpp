@@ -4,19 +4,16 @@
 #include <raylib.h>
 #include <raymath.h>
 
-const float COOLDOWN = 1.5;
 const float RADIUS = 1.5;
-const float DAMAGE_MULTIPLIER = 0.8;
 const float SPEED = 500;
 
 Bullet::Bullet(Player &player, bool unlocked) : player(player) {
-  this->is_unlocked = unlocked;
-
   name = "Bullet";
   id = BULLET;
-  cooldown = COOLDOWN;
+  is_unlocked = unlocked;
+  level = 1;
+  stats = get_current_stats();
   radius = RADIUS;
-  damage_multiplier = DAMAGE_MULTIPLIER;
   speed = SPEED;
 }
 
@@ -33,14 +30,42 @@ void Bullet::draw() {
   }
 }
 
-void Bullet::shoot(std::vector<Enemy> &enemies) {
-  cooldown -= GetFrameTime();
+void Bullet::upgrade() {
+  if (!is_unlocked) {
+    is_unlocked = true;
+    return;
+  }
+  level++;
+  stats = get_current_stats();
+}
 
-  if (cooldown > 0 || enemies.empty()) {
+BulletStats Bullet::get_current_stats() {
+  switch (level) {
+  case 1:
+    return create_stats(1.5, 0.8);
+  case 2:
+    return create_stats(1.5, 0.9);
+  case 3:
+    return create_stats(1, 0.9);
+  case 4:
+    return create_stats(0.8, 1);
+  default:
+    return create_stats(0.5, 1.2);
+  }
+}
+
+BulletStats Bullet::create_stats(float cooldown, float damage_multiplier) {
+  return {cooldown, cooldown, damage_multiplier};
+}
+
+void Bullet::shoot(std::vector<Enemy> &enemies) {
+  stats.cooldown -= GetFrameTime();
+
+  if (stats.cooldown > 0 || enemies.empty()) {
     return;
   }
 
-  cooldown = COOLDOWN;
+  stats.cooldown = stats.base_cooldown;
 
   Enemy *nearest = &enemies[0];
   for (auto &enemy : enemies) {
@@ -77,7 +102,7 @@ void Bullet::check_for_collisions(std::vector<Enemy> &enemies) {
       bool is_colliding = CheckCollisionCircles(
           projectile.position, radius, enemy.position, enemy.collider_radius);
       if (is_colliding) {
-        enemy.take_damage(player.stats.damage * damage_multiplier);
+        enemy.take_damage(player.stats.damage * stats.damage_multiplier);
         projectile.alive = false;
         break;
       }
