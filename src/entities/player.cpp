@@ -12,11 +12,9 @@ const float BASE_HEALTH = 200;
 const float BASE_SPEED = 100;
 const float BASE_DAMAGE = 30;
 
-const float COLLIDER_RADIUS = 15;
-
 Player::Player(float x, float y) {
   init_stats(BASE_HEALTH, BASE_DAMAGE, BASE_SPEED);
-  collider_radius = COLLIDER_RADIUS;
+  collider_radius = 15;
   position = {x, y};
 
   experience = {1, 0, 200};

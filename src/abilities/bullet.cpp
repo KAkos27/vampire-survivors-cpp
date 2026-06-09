@@ -4,17 +4,14 @@
 #include <raylib.h>
 #include <raymath.h>
 
-const float RADIUS = 1.5;
-const float SPEED = 500;
-
 Bullet::Bullet(Player &player, bool unlocked) : player(player) {
   name = "Bullet";
   id = BULLET;
   is_unlocked = unlocked;
   level = 1;
   stats = get_current_stats();
-  radius = RADIUS;
-  speed = SPEED;
+  radius = 3;
+  speed = 500;
 }
 
 void Bullet::update(std::vector<Enemy> &enemies) {

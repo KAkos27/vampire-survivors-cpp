@@ -3,8 +3,6 @@
 #include <raylib.h>
 #include <vector>
 
-const float TICK_TIME = 1;
-
 FireAura::FireAura(Player &player, bool unlocked) : player(player) {
   name = "Fire aura";
   id = FIRE_AURA;

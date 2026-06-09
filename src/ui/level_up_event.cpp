@@ -14,6 +14,7 @@ void LevelUpEvent::set_event() {
   while (ability_candidate_ids.size() != 3) {
     int index = random_int(0, player.abilities.size() - 1);
     bool contains = false;
+    bool is_low_level = player.abilities[index]->level < MAX_ABILITY_LEVEL;
 
     for (auto &ability : ability_candidate_ids) {
       if (ability == player.abilities[index]->id) {
@@ -21,7 +22,8 @@ void LevelUpEvent::set_event() {
       }
     }
 
-    if (!contains) {
+    // TODO: will soft-lock
+    if (!contains && is_low_level) {
       ability_candidate_ids.push_back(player.abilities[index]->id);
     }
   }

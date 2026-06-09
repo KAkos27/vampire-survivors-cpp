@@ -9,6 +9,8 @@ enum AbilityId {
   METEOR,
 };
 
+static const int MAX_ABILITY_LEVEL = 5;
+
 class Ability {
 
 public:
