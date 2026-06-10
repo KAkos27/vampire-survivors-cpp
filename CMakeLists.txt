@@ -8,6 +8,7 @@ find_package(raylib REQUIRED)
 add_executable(vampire_survivors
     src/main.cpp
     src/game.cpp
+    src/run.cpp
 
     src/utils/random.cpp
 

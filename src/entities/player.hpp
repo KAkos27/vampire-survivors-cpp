@@ -37,11 +37,13 @@ public:
   Stats stats;
   std::vector<std::unique_ptr<Ability>> abilities;
   bool leveled_up;
+  bool is_alive;
   float collider_radius;
   void update_player(std::vector<Enemy> &enemies);
   void draw_player();
   void draw_abilities();
   void gain_xp(float amount);
+  void take_damage(float amount);
   void upgrade_ability(AbilityId);
   Ability get_ability(AbilityId);
 

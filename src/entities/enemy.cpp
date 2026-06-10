@@ -1,5 +1,5 @@
 #include "enemy.hpp"
-#include "../game.hpp"
+#include "../run.hpp"
 #include "player.hpp"
 #include <raylib.h>
 #include <raymath.h>
@@ -7,23 +7,27 @@
 const float SPEED = 50;
 const float HEALTH = 100;
 const float COLLIDER_RADIUS = 15;
+const float DAMAGE = 25;
+const float ATTACK_TIMER = 1;
 const float HURT_TIMER = 0.15;
 
 Enemy::Enemy(Player *player, float game_time) : player(player) {
   calculate_difficulity(game_time);
+  health = {HEALTH * difficulity, HEALTH * difficulity};
+  damage = DAMAGE * difficulity;
   speed = SPEED;
   collider_radius = COLLIDER_RADIUS;
   xp_drop = 200 * difficulity;
   position = {200, 200};
   alive = true;
-  health = {HEALTH * difficulity, HEALTH * difficulity};
   color = RED;
   hurt = false;
   hurt_timer = HURT_TIMER;
+  attack_timer = ATTACK_TIMER;
 }
 
 void Enemy::calculate_difficulity(float game_time) {
-  float eleapsed_minutes = (BASE_GAME_TIME - game_time) / 60;
+  float eleapsed_minutes = (BASE_RUN_TIME - game_time) / 60;
   difficulity = 1.0 + eleapsed_minutes * 0.5;
 }
 
@@ -44,12 +48,16 @@ void Enemy::follow_player() {
 }
 
 void Enemy::check_for_player_hit() {
-  // bool is_colliding = CheckCollisionCircles(
-  //     position, collider_radius, player->position, player->collider_radius);
-  //
-  // if (is_colliding) {
-  //   TraceLog(LOG_INFO, "Collision happened");
-  // }
+  bool is_colliding = CheckCollisionCircles(
+      position, collider_radius, player->position, player->collider_radius);
+
+  float delta = GetFrameTime();
+  attack_timer -= delta;
+
+  if (is_colliding && attack_timer <= 0) {
+    player->take_damage(damage);
+    attack_timer = ATTACK_TIMER;
+  }
 }
 
 void Enemy::take_damage(float damage) {

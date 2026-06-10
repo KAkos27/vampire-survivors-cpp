@@ -20,6 +20,7 @@ Player::Player(float x, float y) {
 
   experience = {1, 0, 200};
   leveled_up = false;
+  is_alive = true;
 
   abilities.push_back(std::make_unique<Heal>(*this, false));
 
@@ -89,6 +90,14 @@ void Player::gain_xp(float amount) {
     experience.current = remaining;
     leveled_up = true;
     update_stats();
+  }
+}
+
+void Player::take_damage(float amount) {
+  stats.health.current -= amount;
+
+  if (stats.health.current <= 0) {
+    is_alive = false;
   }
 }
 

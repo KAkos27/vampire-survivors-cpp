@@ -27,8 +27,10 @@ private:
   Color color;
   float difficulity;
   float speed;
-  bool hurt;
+  float damage;
+  float attack_timer;
   float hurt_timer;
+  bool hurt;
   void follow_player();
   void check_for_player_hit();
   void flash_enemy();
