@@ -11,21 +11,22 @@ void LevelUpEvent::set_event() {
   been_selected = false;
   ability_candidate_ids.clear();
 
+  for (auto &ability : player.abilities) {
+    bool is_low_level = ability->level < MAX_ABILITY_LEVEL;
+
+    if (is_low_level && ability->id != HEAL) {
+      ability_candidate_ids.push_back(ability->id);
+    }
+  }
+
+  shuffle_vector(ability_candidate_ids);
+
+  if (ability_candidate_ids.size() > 3) {
+    ability_candidate_ids.resize(3);
+  }
+
   while (ability_candidate_ids.size() != 3) {
-    int index = random_int(0, player.abilities.size() - 1);
-    bool contains = false;
-    bool is_low_level = player.abilities[index]->level < MAX_ABILITY_LEVEL;
-
-    for (auto &ability : ability_candidate_ids) {
-      if (ability == player.abilities[index]->id) {
-        contains = true;
-      }
-    }
-
-    // TODO: will soft-lock
-    if (!contains && is_low_level) {
-      ability_candidate_ids.push_back(player.abilities[index]->id);
-    }
+    ability_candidate_ids.push_back(HEAL);
   }
 }
 

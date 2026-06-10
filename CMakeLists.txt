@@ -21,6 +21,7 @@ add_executable(vampire_survivors
     src/abilities/bullet.cpp
     src/abilities/fire_aura.cpp
     src/abilities/meteor.cpp
+    src/abilities/heal.cpp
 )
 
 target_link_libraries(vampire_survivors raylib)

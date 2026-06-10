@@ -1,4 +1,5 @@
 #include "enemy.hpp"
+#include "../game.hpp"
 #include "player.hpp"
 #include <raylib.h>
 #include <raymath.h>
@@ -8,16 +9,22 @@ const float HEALTH = 100;
 const float COLLIDER_RADIUS = 15;
 const float HURT_TIMER = 0.15;
 
-Enemy::Enemy(Player *player) : player(player) {
+Enemy::Enemy(Player *player, float game_time) : player(player) {
+  calculate_difficulity(game_time);
   speed = SPEED;
   collider_radius = COLLIDER_RADIUS;
-  xp_drop = 200;
+  xp_drop = 200 * difficulity;
   position = {200, 200};
   alive = true;
-  health = {HEALTH, HEALTH};
+  health = {HEALTH * difficulity, HEALTH * difficulity};
   color = RED;
   hurt = false;
   hurt_timer = HURT_TIMER;
+}
+
+void Enemy::calculate_difficulity(float game_time) {
+  float eleapsed_minutes = (BASE_GAME_TIME - game_time) / 60;
+  difficulity = 1.0 + eleapsed_minutes * 0.5;
 }
 
 void Enemy::update_enemy() {

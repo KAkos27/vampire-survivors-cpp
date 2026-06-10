@@ -12,7 +12,7 @@ struct EnemyHealth {
 class Enemy {
 
 public:
-  Enemy(Player *player);
+  Enemy(Player *player, float game_time);
   Vector2 position;
   EnemyHealth health;
   bool alive;
@@ -25,10 +25,12 @@ public:
 private:
   Player *player;
   Color color;
+  float difficulity;
   float speed;
   bool hurt;
   float hurt_timer;
   void follow_player();
   void check_for_player_hit();
   void flash_enemy();
+  void calculate_difficulity(float game_time);
 };

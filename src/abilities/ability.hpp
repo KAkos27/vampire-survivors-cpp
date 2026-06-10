@@ -7,6 +7,7 @@ enum AbilityId {
   BULLET,
   FIRE_AURA,
   METEOR,
+  HEAL,
 };
 
 static const int MAX_ABILITY_LEVEL = 5;

@@ -63,7 +63,7 @@ void Meteor::strike_meteor(std::vector<Enemy> &enemies) {
 
 void Meteor::draw() {
   for (auto &crater : craters) {
-    DrawCircleV(crater.position, stats.crater_radius, ORANGE);
+    DrawCircleV(crater.position, stats.crater_radius, GOLD);
   }
 }
 

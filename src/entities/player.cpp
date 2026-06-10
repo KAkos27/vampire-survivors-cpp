@@ -1,6 +1,7 @@
 #include "player.hpp"
 #include "../abilities/bullet.hpp"
 #include "../abilities/fire_aura.hpp"
+#include "../abilities/heal.hpp"
 #include "../abilities/meteor.hpp"
 #include "enemy.hpp"
 #include <memory>
@@ -19,6 +20,8 @@ Player::Player(float x, float y) {
 
   experience = {1, 0, 200};
   leveled_up = false;
+
+  abilities.push_back(std::make_unique<Heal>(*this, false));
 
   abilities.push_back(std::make_unique<FireAura>(*this, false));
   abilities.push_back(std::make_unique<Meteor>(*this, false));
