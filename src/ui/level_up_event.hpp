@@ -2,6 +2,7 @@
 
 #include "../abilities/ability.hpp"
 #include "../entities/player.hpp"
+#include <cstddef>
 #include <vector>
 
 class LevelUpEvent {
@@ -15,5 +16,5 @@ public:
 private:
   Player &player;
   std::vector<AbilityId> ability_candidate_ids;
-  bool draw_button(int index);
+  bool draw_button(std::size_t index);
 };

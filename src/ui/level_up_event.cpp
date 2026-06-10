@@ -1,6 +1,7 @@
 #include "level_up_event.hpp"
 #include "../utils/random.hpp"
 #include "raygui.h"
+#include <cstddef>
 #include <raylib.h>
 
 LevelUpEvent::LevelUpEvent(Player &player) : player(player) {
@@ -31,7 +32,7 @@ void LevelUpEvent::set_event() {
 }
 
 void LevelUpEvent::update_event() {
-  for (int i = 0; i < ability_candidate_ids.size(); i++) {
+  for (std::size_t i = 0; i < ability_candidate_ids.size(); i++) {
     bool clicked = draw_button(i);
     if (clicked) {
       Ability ability = player.get_ability(ability_candidate_ids[i]);
@@ -41,7 +42,7 @@ void LevelUpEvent::update_event() {
   }
 }
 
-bool LevelUpEvent::draw_button(int index) {
+bool LevelUpEvent::draw_button(std::size_t index) {
   float gap = index * 50;
   Ability ability = player.get_ability(ability_candidate_ids[index]);
   const char *helper_text = ability.is_unlocked ? "upgrade" : "unlock";
