@@ -16,7 +16,7 @@ add_executable(vampire_survivors
     src/ui/ray_gui_impl.cpp
 
     src/entities/player.cpp
-    src/entities/enemy.cpp
+    src/entities/basic_enemy.cpp
     src/entities/enemy_spawner.cpp
 
     src/abilities/bullet.cpp

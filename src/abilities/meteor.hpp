@@ -25,7 +25,7 @@ class Meteor : public Ability {
 
 public:
   Meteor(Player &player, bool unlocked);
-  void update(std::vector<Enemy> &enemies) override;
+  void update(std::vector<std::unique_ptr<Enemy>> &enemies) override;
   void draw() override;
   void upgrade() override;
 
@@ -33,8 +33,8 @@ private:
   Player &player;
   std::vector<MeteorCrater> craters;
   MeteorStats stats;
-  void strike_meteor(std::vector<Enemy> &enemies);
-  void deal_crater_damage(std::vector<Enemy> &enemies);
+  void strike_meteor(std::vector<std::unique_ptr<Enemy>> &enemies);
+  void deal_crater_damage(std::vector<std::unique_ptr<Enemy>> &enemies);
   void handle_crater_duration();
   void delete_dead_craters();
   MeteorStats get_current_stats();

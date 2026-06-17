@@ -5,8 +5,6 @@
 #include <raylib.h>
 #include <vector>
 
-class Enemy;
-
 struct Experience {
   int level;
   float current;
@@ -39,7 +37,7 @@ public:
   bool leveled_up;
   bool is_alive;
   float collider_radius;
-  void update_player(std::vector<Enemy> &enemies);
+  void update_player(std::vector<std::unique_ptr<Enemy>> &enemies);
   void draw_player();
   void draw_abilities();
   void gain_xp(float amount);
@@ -50,7 +48,7 @@ public:
 
 private:
   void set_input_position();
-  void update_abilities(std::vector<Enemy> &enemies);
+  void update_abilities(std::vector<std::unique_ptr<Enemy>> &enemies);
   void init_stats(float health, float damage, float speed);
   void update_stats();
 };

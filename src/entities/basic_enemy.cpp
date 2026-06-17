@@ -1,4 +1,4 @@
-#include "enemy.hpp"
+#include "basic_enemy.hpp"
 #include "../run.hpp"
 #include "player.hpp"
 #include <raylib.h>
@@ -11,8 +11,7 @@ const float DAMAGE = 25;
 const float ATTACK_TIMER = 1;
 const float HURT_TIMER = 0.15;
 
-Enemy::Enemy(Player *player, float game_time, Vector2 spawn_position,
-             EnemyType enemy_type)
+BasicEnemy::BasicEnemy(Player *player, float game_time, Vector2 spawn_position)
     : player(player) {
   calculate_difficulity(game_time);
   health = {HEALTH * difficulity, HEALTH * difficulity};
@@ -21,7 +20,6 @@ Enemy::Enemy(Player *player, float game_time, Vector2 spawn_position,
   collider_radius = COLLIDER_RADIUS;
   xp_drop = 2000 * difficulity;
   position = spawn_position;
-  type = enemy_type;
   alive = true;
   color = RED;
   hurt = false;
@@ -29,22 +27,20 @@ Enemy::Enemy(Player *player, float game_time, Vector2 spawn_position,
   attack_timer = ATTACK_TIMER;
 }
 
-void Enemy::set_stats() {}
-
-void Enemy::calculate_difficulity(float game_time) {
+void BasicEnemy::calculate_difficulity(float game_time) {
   float eleapsed_minutes = (BASE_RUN_TIME - game_time) / 60;
   difficulity = 1.0 + eleapsed_minutes * 0.5;
 }
 
-void Enemy::update_enemy() {
+void BasicEnemy::update_enemy() {
   follow_player();
   check_for_player_hit();
   flash_enemy();
 }
 
-void Enemy::draw_enemy() { DrawCircleV(position, collider_radius, color); }
+void BasicEnemy::draw_enemy() { DrawCircleV(position, collider_radius, color); }
 
-void Enemy::follow_player() {
+void BasicEnemy::follow_player() {
   Vector2 direction = Vector2Subtract(player->position, position);
 
   float delta = GetFrameTime();
@@ -52,7 +48,7 @@ void Enemy::follow_player() {
   position = Vector2Add(position, velocity);
 }
 
-void Enemy::check_for_player_hit() {
+void BasicEnemy::check_for_player_hit() {
   bool is_colliding = CheckCollisionCircles(
       position, collider_radius, player->position, player->collider_radius);
 
@@ -65,7 +61,7 @@ void Enemy::check_for_player_hit() {
   }
 }
 
-void Enemy::take_damage(float damage) {
+void BasicEnemy::take_damage(float damage) {
   TraceLog(LOG_INFO, "enemy taken damage: %f", damage);
   health.current -= damage;
   hurt = true;
@@ -76,7 +72,7 @@ void Enemy::take_damage(float damage) {
   }
 }
 
-void Enemy::flash_enemy() {
+void BasicEnemy::flash_enemy() {
   if (!hurt) {
     return;
   }

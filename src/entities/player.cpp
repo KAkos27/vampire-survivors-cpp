@@ -35,7 +35,7 @@ void Player::init_stats(float health, float damage, float speed) {
   };
 }
 
-void Player::update_player(std::vector<Enemy> &enemies) {
+void Player::update_player(std::vector<std::unique_ptr<Enemy>> &enemies) {
   set_input_position();
   update_abilities(enemies);
 }
@@ -45,7 +45,7 @@ void Player::draw_player() {
   DrawCircleV(position, collider_radius, GREEN);
 }
 
-void Player::update_abilities(std::vector<Enemy> &enemies) {
+void Player::update_abilities(std::vector<std::unique_ptr<Enemy>> &enemies) {
   for (auto &ability : abilities) {
     if (ability->is_unlocked) {
       ability->update(enemies);

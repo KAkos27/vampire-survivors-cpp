@@ -19,7 +19,7 @@ public:
   AbilityId id;
   bool is_unlocked;
   int level;
-  virtual void update(std::vector<Enemy> &enemies) = 0;
+  virtual void update(std::vector<std::unique_ptr<Enemy>> &enemies) = 0;
   virtual void draw() = 0;
   virtual void upgrade() = 0;
   virtual ~Ability() = default;

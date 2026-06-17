@@ -20,7 +20,7 @@ Bullet::Bullet(Player &player, bool unlocked) : player(player) {
   projectiles_left = 0;
 }
 
-void Bullet::update(std::vector<Enemy> &enemies) {
+void Bullet::update(std::vector<std::unique_ptr<Enemy>> &enemies) {
   shoot(enemies);
   update_projectiles();
   check_for_collisions(enemies);
@@ -62,7 +62,7 @@ BulletStats Bullet::create_stats(std::size_t count, float cooldown,
   return {count, cooldown, cooldown, damage_multiplier};
 }
 
-void Bullet::shoot(std::vector<Enemy> &enemies) {
+void Bullet::shoot(std::vector<std::unique_ptr<Enemy>> &enemies) {
   float delta = GetFrameTime();
 
   stats.cooldown -= delta;
@@ -79,14 +79,14 @@ void Bullet::shoot(std::vector<Enemy> &enemies) {
     projecitle_delay = 0;
   }
 
-  Enemy *nearest = &enemies[0];
+  Enemy *nearest = enemies[0].get();
   for (auto &enemy : enemies) {
-    float current_distance = Vector2Distance(player.position, enemy.position);
+    float current_distance = Vector2Distance(player.position, enemy->position);
     float nearest_distance =
         Vector2Distance(player.position, nearest->position);
 
     if (current_distance < nearest_distance) {
-      nearest = &enemy;
+      nearest = enemy.get();
     }
   }
 
@@ -119,14 +119,15 @@ void Bullet::update_projectiles() {
   }
 }
 
-void Bullet::check_for_collisions(std::vector<Enemy> &enemies) {
+void Bullet::check_for_collisions(
+    std::vector<std::unique_ptr<Enemy>> &enemies) {
   for (auto &projectile : projectiles) {
     for (auto &enemy : enemies) {
 
       bool is_colliding = CheckCollisionCircles(
-          projectile.position, radius, enemy.position, enemy.collider_radius);
+          projectile.position, radius, enemy->position, enemy->collider_radius);
       if (is_colliding) {
-        enemy.take_damage(player.stats.damage * stats.damage_multiplier);
+        enemy->take_damage(player.stats.damage * stats.damage_multiplier);
         projectile.alive = false;
         break;
       }

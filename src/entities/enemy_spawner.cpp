@@ -1,7 +1,8 @@
 #include "enemy_spawner.hpp"
 #include "../utils/random.hpp"
-#include "enemy.hpp"
+#include "basic_enemy.hpp"
 #include "player.hpp"
+#include <memory>
 #include <raylib.h>
 #include <raymath.h>
 
@@ -16,8 +17,8 @@ void EnemySpawner::spawn_enemies(float game_time, Camera2D camera) {
   spawn_timer -= delta;
 
   if (spawn_timer <= 0) {
-    enemies.push_back(Enemy(&player, game_time, get_random_position(camera),
-                            EnemyType::WEAK));
+    enemies.push_back(std::make_unique<BasicEnemy>(
+        &player, game_time, get_random_position(camera)));
     spawn_timer = SPAWN_TIMER;
   }
 }
@@ -39,19 +40,16 @@ Vector2 EnemySpawner::get_random_position(Camera2D camera) {
     float y = topLeft.y - margin;
     return {x, y};
   }
-
   case 1: {
     float x = random_float(topLeft.x, bottomRight.x);
     float y = bottomRight.y + margin;
     return {x, y};
   }
-
   case 2: {
     float x = topLeft.x - margin;
     float y = random_float(topLeft.y, bottomRight.y);
     return {x, y};
   }
-
   default: {
     float x = bottomRight.x + margin;
     float y = random_float(topLeft.y, bottomRight.y);
@@ -65,7 +63,7 @@ void EnemySpawner::update_enemies(float game_time, Camera2D camera) {
   delete_dead_enemies();
 
   for (auto &enemy : enemies) {
-    enemy.update_enemy();
+    enemy->update_enemy();
   }
 
   separate_enemies();
@@ -73,31 +71,31 @@ void EnemySpawner::update_enemies(float game_time, Camera2D camera) {
 
 void EnemySpawner::draw_enemies() {
   for (auto &enemy : enemies) {
-    enemy.draw_enemy();
+    enemy->draw_enemy();
   }
 }
 
 void EnemySpawner::separate_enemies() {
   for (std::size_t i = 0; i < enemies.size(); i++) {
     for (std::size_t j = i + 1; j < enemies.size(); j++) {
-      Enemy &a = enemies[i];
-      Enemy &b = enemies[j];
+      Enemy *a = enemies[i].get();
+      Enemy *b = enemies[j].get();
 
-      if (a.alive && b.alive) {
-        Vector2 diff = Vector2Subtract(a.position, b.position);
+      if (a->alive && b->alive) {
+        Vector2 diff = Vector2Subtract(a->position, b->position);
         float distance = Vector2Length(diff);
 
-        float minDistance = a.collider_radius + b.collider_radius;
+        float minDistance = a->collider_radius + b->collider_radius;
 
-        if (distance > 0.0f && distance < minDistance) {
-          Vector2 pushDir = Vector2Scale(diff, 1.0f / distance);
+        if (distance > 0.0 && distance < minDistance) {
+          Vector2 pushDir = Vector2Scale(diff, 1.0 / distance);
 
           float overlap = minDistance - distance;
 
-          Vector2 push = Vector2Scale(pushDir, overlap * 0.5f);
+          Vector2 push = Vector2Scale(pushDir, overlap * 0.5);
 
-          a.position = Vector2Add(a.position, push);
-          b.position = Vector2Subtract(b.position, push);
+          a->position = Vector2Add(a->position, push);
+          b->position = Vector2Subtract(b->position, push);
         }
       }
     }
@@ -106,6 +104,6 @@ void EnemySpawner::separate_enemies() {
 
 void EnemySpawner::delete_dead_enemies() {
   enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
-                               [](const Enemy &e) { return !e.alive; }),
+                               [](const auto &e) { return !e->alive; }),
                 enemies.end());
 }

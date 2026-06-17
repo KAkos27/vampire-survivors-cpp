@@ -10,8 +10,8 @@ Heal::Heal(Player &player, bool unlocked) : player(player) {
   heal_amount = 25.0;
 }
 
-void Heal::update(std::vector<Enemy> &enemies) {
-  std::cout << enemies[0].health.current << '\n';
+void Heal::update(std::vector<std::unique_ptr<Enemy>> &enemies) {
+  std::cout << enemies[0]->health.current << '\n';
 }
 
 void Heal::draw() {}

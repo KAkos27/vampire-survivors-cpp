@@ -12,7 +12,7 @@ Meteor::Meteor(Player &player, bool unlocked) : player(player) {
   stats = get_current_stats();
 }
 
-void Meteor::update(std::vector<Enemy> &enemies) {
+void Meteor::update(std::vector<std::unique_ptr<Enemy>> &enemies) {
   strike_meteor(enemies);
   handle_crater_duration();
   delete_dead_craters();
@@ -43,7 +43,7 @@ MeteorStats Meteor::get_current_stats() {
   }
 }
 
-void Meteor::strike_meteor(std::vector<Enemy> &enemies) {
+void Meteor::strike_meteor(std::vector<std::unique_ptr<Enemy>> &enemies) {
   float delta = GetFrameTime();
   stats.cooldown -= delta;
 
@@ -54,8 +54,8 @@ void Meteor::strike_meteor(std::vector<Enemy> &enemies) {
   if (stats.cooldown <= 0) {
     int index = random_int(0, enemies.size() - 1);
 
-    enemies[index].take_damage(30);
-    craters.push_back({enemies[index].position, stats.crater_duration, true});
+    enemies[index]->take_damage(30);
+    craters.push_back({enemies[index]->position, stats.crater_duration, true});
 
     stats.cooldown = stats.base_cooldown;
   }
@@ -67,7 +67,7 @@ void Meteor::draw() {
   }
 }
 
-void Meteor::deal_crater_damage(std::vector<Enemy> &enemies) {
+void Meteor::deal_crater_damage(std::vector<std::unique_ptr<Enemy>> &enemies) {
   float delta = GetFrameTime();
   stats.crater_damage_tick_timer -= delta;
 
@@ -79,10 +79,11 @@ void Meteor::deal_crater_damage(std::vector<Enemy> &enemies) {
   for (auto &crater : craters) {
     for (auto &enemy : enemies) {
       bool is_colliding =
-          CheckCollisionCircles(enemy.position, enemy.collider_radius,
+          CheckCollisionCircles(enemy->position, enemy->collider_radius,
                                 crater.position, stats.crater_radius);
       if (is_colliding) {
-        enemy.take_damage(stats.crater_damage_multiplier * player.stats.damage);
+        enemy->take_damage(stats.crater_damage_multiplier *
+                           player.stats.damage);
       }
     }
   }

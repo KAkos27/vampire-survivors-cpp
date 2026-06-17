@@ -11,7 +11,9 @@ FireAura::FireAura(Player &player, bool unlocked) : player(player) {
   stats = get_current_stats();
 }
 
-void FireAura::update(std::vector<Enemy> &enemies) { deal_damage(enemies); }
+void FireAura::update(std::vector<std::unique_ptr<Enemy>> &enemies) {
+  deal_damage(enemies);
+}
 
 void FireAura::draw() { DrawCircleV(player.position, stats.radius, ORANGE); }
 
@@ -44,7 +46,7 @@ FireAuraStats FireAura::create_stats(float radius, float damage_muliplier,
   return {radius, damage_muliplier, tick_time, tick_time};
 }
 
-void FireAura::deal_damage(std::vector<Enemy> &enemies) {
+void FireAura::deal_damage(std::vector<std::unique_ptr<Enemy>> &enemies) {
   float delta = GetFrameTime();
   stats.tick_time -= delta;
 
@@ -56,10 +58,10 @@ void FireAura::deal_damage(std::vector<Enemy> &enemies) {
 
   for (auto &enemy : enemies) {
     bool is_colliding = CheckCollisionCircles(
-        enemy.position, enemy.collider_radius, player.position, stats.radius);
+        enemy->position, enemy->collider_radius, player.position, stats.radius);
 
     if (is_colliding) {
-      enemy.take_damage(player.stats.damage * stats.damage_muliplier);
+      enemy->take_damage(player.stats.damage * stats.damage_muliplier);
     }
   }
 }
