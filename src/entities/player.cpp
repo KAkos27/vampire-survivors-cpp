@@ -19,7 +19,7 @@ Player::Player(float x, float y) {
   position = {x, y};
 
   experience = {1, 0, 200};
-  leveled_up = false;
+  leveled_up = 0;
   is_alive = true;
 
   abilities.push_back(std::make_unique<Heal>(*this, false));
@@ -63,13 +63,13 @@ void Player::draw_abilities() {
 
 void Player::set_input_position() {
   Vector2 direction = {0, 0};
-  if (IsKeyDown(KEY_RIGHT))
+  if (IsKeyDown(KEY_D))
     direction.x += 1;
-  if (IsKeyDown(KEY_LEFT))
+  if (IsKeyDown(KEY_A))
     direction.x -= 1;
-  if (IsKeyDown(KEY_UP))
+  if (IsKeyDown(KEY_W))
     direction.y -= 1;
-  if (IsKeyDown(KEY_DOWN))
+  if (IsKeyDown(KEY_S))
     direction.y += 1;
 
   float delta = GetFrameTime();
@@ -82,13 +82,13 @@ void Player::set_input_position() {
 void Player::gain_xp(float amount) {
   experience.current += amount;
 
-  if (experience.current >= experience.xp_to_next_level) {
+  while (experience.current >= experience.xp_to_next_level) {
     float remaining = experience.current - experience.xp_to_next_level;
 
     experience.level++;
     experience.xp_to_next_level *= 2;
     experience.current = remaining;
-    leveled_up = true;
+    leveled_up++;
     update_stats();
   }
 }

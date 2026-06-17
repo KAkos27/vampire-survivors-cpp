@@ -7,9 +7,9 @@ class BasicEnemy : public Enemy {
 
 public:
   BasicEnemy(Player *player, float game_time, Vector2 spawn_position);
-  void update_enemy();
-  void take_damage(float damage);
-  void draw_enemy();
+  void update_enemy() override;
+  void take_damage(float damage) override;
+  void draw_enemy() override;
 
 private:
   Player *player;

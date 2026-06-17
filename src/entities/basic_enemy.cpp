@@ -18,7 +18,7 @@ BasicEnemy::BasicEnemy(Player *player, float game_time, Vector2 spawn_position)
   damage = DAMAGE * difficulity;
   speed = SPEED;
   collider_radius = COLLIDER_RADIUS;
-  xp_drop = 2000 * difficulity;
+  xp_drop = 175 * difficulity;
   position = spawn_position;
   alive = true;
   color = RED;

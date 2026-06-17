@@ -2,11 +2,12 @@
 #include "../utils/random.hpp"
 #include "basic_enemy.hpp"
 #include "player.hpp"
+#include "ranged_enemy.hpp"
 #include <memory>
 #include <raylib.h>
 #include <raymath.h>
 
-const float SPAWN_TIMER = 0.5;
+const float SPAWN_TIMER = 1;
 
 EnemySpawner::EnemySpawner(Player &player) : player(player) {
   spawn_timer = SPAWN_TIMER;
@@ -18,6 +19,8 @@ void EnemySpawner::spawn_enemies(float game_time, Camera2D camera) {
 
   if (spawn_timer <= 0) {
     enemies.push_back(std::make_unique<BasicEnemy>(
+        &player, game_time, get_random_position(camera)));
+    enemies.push_back(std::make_unique<RangedEnemy>(
         &player, game_time, get_random_position(camera)));
     spawn_timer = SPAWN_TIMER;
   }

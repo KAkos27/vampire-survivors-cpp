@@ -45,9 +45,8 @@ void Run::update_run() {
 }
 
 void Run::check_for_level_up() {
-  if (player.leveled_up) {
+  if (player.leveled_up > 0) {
     state = RunState::LEVEL_UP;
-    player.leveled_up = false;
     level_up_event.set_event();
   }
 }

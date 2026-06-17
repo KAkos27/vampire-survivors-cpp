@@ -37,6 +37,7 @@ void LevelUpEvent::update_event() {
     if (clicked) {
       player.upgrade_ability(ability_candidate_ids[i]);
       been_selected = true;
+      player.leveled_up--;
     }
   }
 }

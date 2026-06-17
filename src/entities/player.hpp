@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../abilities/ability.hpp"
+#include <cstddef>
 #include <memory>
 #include <raylib.h>
 #include <vector>
@@ -34,7 +35,7 @@ public:
   Experience experience;
   Stats stats;
   std::vector<std::unique_ptr<Ability>> abilities;
-  bool leveled_up;
+  std::size_t leveled_up;
   bool is_alive;
   float collider_radius;
   void update_player(std::vector<std::unique_ptr<Enemy>> &enemies);
