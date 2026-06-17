@@ -7,7 +7,7 @@
 
 const float BASE_RUN_TIME = 30 * 60;
 
-enum RunState {
+enum class RunState {
   PLAYING,
   LEVEL_UP,
   PAUSED,

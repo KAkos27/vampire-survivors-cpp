@@ -44,8 +44,9 @@ public:
   void draw_abilities();
   void gain_xp(float amount);
   void take_damage(float amount);
+  void heal(float amoutn);
   void upgrade_ability(AbilityId);
-  Ability get_ability(AbilityId);
+  Ability *get_ability(AbilityId);
 
 private:
   void set_input_position();

@@ -30,3 +30,9 @@ target_link_libraries(vampire_survivors raylib)
 target_include_directories(vampire_survivors PRIVATE
     src/external/raygui/src
 )
+
+target_compile_options(vampire_survivors PRIVATE
+    -Wall
+    -Wextra
+    -Wpedantic
+)

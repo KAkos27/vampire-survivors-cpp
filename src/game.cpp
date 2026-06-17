@@ -1,8 +1,9 @@
 #include "game.hpp"
+#include "raygui.h"
 #include <memory>
 #include <raylib.h>
 
-Game::Game() {}
+Game::Game() { state = GameState::ON_MAIN_MENU; }
 
 void Game::init_window() {
   // const int monitor = GetCurrentMonitor();
@@ -18,16 +19,13 @@ void Game::init_window() {
 
 void Game::run_game() {
   init_window();
-  run = std::make_unique<Run>();
 
   while (!WindowShouldClose()) {
     BeginDrawing();
     {
       ClearBackground(BLACK);
-
-      if (!run->acitve()) {
-        restart_run();
-      }
+      handle_current_run();
+      handle_main_menu();
     }
     EndDrawing();
   }
@@ -35,4 +33,33 @@ void Game::run_game() {
   CloseWindow();
 }
 
-void Game::restart_run() { run = std::make_unique<Run>(); }
+void Game::new_run() { run = std::make_unique<Run>(); }
+
+void Game::handle_current_run() {
+  if (state != GameState::RUN_STARTED) {
+    return;
+  }
+
+  if (!run->acitve()) {
+    state = GameState::ON_MAIN_MENU;
+  }
+}
+
+void Game::handle_main_menu() {
+  if (state != GameState::ON_MAIN_MENU) {
+    return;
+  }
+
+  const float width = 720;
+  const float height = 72;
+
+  const float centerX = (GetScreenWidth() / 2.0) - (width / 2.0);
+  const float centerY = (GetScreenHeight() / 2.0) - (height / 2.0);
+
+  bool clicked = GuiButton({centerX, centerY, width, height}, "Play");
+
+  if (clicked) {
+    new_run();
+    state = GameState::RUN_STARTED;
+  }
+}

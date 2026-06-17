@@ -1,27 +1,67 @@
 #include "enemy_spawner.hpp"
+#include "../utils/random.hpp"
 #include "enemy.hpp"
 #include "player.hpp"
 #include <raylib.h>
 #include <raymath.h>
 
-const float SPAWN_TIMER = 1;
+const float SPAWN_TIMER = 0.5;
 
 EnemySpawner::EnemySpawner(Player &player) : player(player) {
   spawn_timer = SPAWN_TIMER;
 }
 
-void EnemySpawner::spawn_enemies(float game_time) {
+void EnemySpawner::spawn_enemies(float game_time, Camera2D camera) {
   float delta = GetFrameTime();
   spawn_timer -= delta;
 
   if (spawn_timer <= 0) {
-    enemies.push_back(Enemy(&player, game_time));
+    enemies.push_back(Enemy(&player, game_time, get_random_position(camera),
+                            EnemyType::WEAK));
     spawn_timer = SPAWN_TIMER;
   }
 }
 
-void EnemySpawner::update_enemies(float game_time) {
-  spawn_enemies(game_time);
+Vector2 EnemySpawner::get_random_position(Camera2D camera) {
+  const float margin = 200;
+  Vector2 topLeft = GetScreenToWorld2D({0.0f, 0.0f}, camera);
+
+  Vector2 bottomRight =
+      GetScreenToWorld2D({static_cast<float>(GetScreenWidth()),
+                          static_cast<float>(GetScreenHeight())},
+                         camera);
+
+  int side = random_int(0, 3);
+
+  switch (side) {
+  case 0: {
+    float x = random_float(topLeft.x, bottomRight.x);
+    float y = topLeft.y - margin;
+    return {x, y};
+  }
+
+  case 1: {
+    float x = random_float(topLeft.x, bottomRight.x);
+    float y = bottomRight.y + margin;
+    return {x, y};
+  }
+
+  case 2: {
+    float x = topLeft.x - margin;
+    float y = random_float(topLeft.y, bottomRight.y);
+    return {x, y};
+  }
+
+  default: {
+    float x = bottomRight.x + margin;
+    float y = random_float(topLeft.y, bottomRight.y);
+    return {x, y};
+  }
+  }
+};
+
+void EnemySpawner::update_enemies(float game_time, Camera2D camera) {
+  spawn_enemies(game_time, camera);
   delete_dead_enemies();
 
   for (auto &enemy : enemies) {

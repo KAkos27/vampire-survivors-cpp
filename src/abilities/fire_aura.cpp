@@ -5,7 +5,7 @@
 
 FireAura::FireAura(Player &player, bool unlocked) : player(player) {
   name = "Fire aura";
-  id = FIRE_AURA;
+  id = AbilityId::FIRE_AURA;
   is_unlocked = unlocked;
   level = 1;
   stats = get_current_stats();

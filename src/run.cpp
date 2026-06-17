@@ -10,7 +10,7 @@ Run::Run()
       level_up_event(LevelUpEvent(player)) {
 
   run_time = BASE_RUN_TIME;
-  state = PLAYING;
+  state = RunState::PLAYING;
 
   camera = Camera2D();
   camera.target = {player.position.x, player.position.y};
@@ -34,30 +34,30 @@ bool Run::acitve() {
 void Run::update_run() {
   camera.target = {player.position.x, player.position.y};
 
-  if (state == PLAYING) {
+  if (state == RunState::PLAYING) {
     float delta = GetFrameTime();
     run_time -= delta;
 
     player.update_player(enemy_spawner.enemies);
-    enemy_spawner.update_enemies(run_time);
+    enemy_spawner.update_enemies(run_time, camera);
     check_for_level_up();
   }
 }
 
 void Run::check_for_level_up() {
   if (player.leveled_up) {
-    state = LEVEL_UP;
+    state = RunState::LEVEL_UP;
     player.leveled_up = false;
     level_up_event.set_event();
   }
 }
 
 void Run::update_level_up_event() {
-  if (state == LEVEL_UP) {
+  if (state == RunState::LEVEL_UP) {
     level_up_event.update_event();
 
     if (level_up_event.been_selected) {
-      state = PLAYING;
+      state = RunState::PLAYING;
     }
   }
 }
@@ -97,10 +97,10 @@ void Run::draw_run() {
 
 void Run::check_for_input() {
   if (IsKeyPressed(KEY_P)) {
-    if (state == PLAYING) {
-      state = PAUSED;
-    } else if (state == PAUSED) {
-      state = PLAYING;
+    if (state == RunState::PLAYING) {
+      state = RunState::PAUSED;
+    } else if (state == RunState::PAUSED) {
+      state = RunState::PLAYING;
     }
   }
 }

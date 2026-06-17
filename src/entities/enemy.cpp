@@ -11,20 +11,25 @@ const float DAMAGE = 25;
 const float ATTACK_TIMER = 1;
 const float HURT_TIMER = 0.15;
 
-Enemy::Enemy(Player *player, float game_time) : player(player) {
+Enemy::Enemy(Player *player, float game_time, Vector2 spawn_position,
+             EnemyType enemy_type)
+    : player(player) {
   calculate_difficulity(game_time);
   health = {HEALTH * difficulity, HEALTH * difficulity};
   damage = DAMAGE * difficulity;
   speed = SPEED;
   collider_radius = COLLIDER_RADIUS;
-  xp_drop = 200 * difficulity;
-  position = {200, 200};
+  xp_drop = 2000 * difficulity;
+  position = spawn_position;
+  type = enemy_type;
   alive = true;
   color = RED;
   hurt = false;
   hurt_timer = HURT_TIMER;
   attack_timer = ATTACK_TIMER;
 }
+
+void Enemy::set_stats() {}
 
 void Enemy::calculate_difficulity(float game_time) {
   float eleapsed_minutes = (BASE_RUN_TIME - game_time) / 60;

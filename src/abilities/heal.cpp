@@ -1,10 +1,19 @@
 #include "heal.hpp"
 #include "ability.hpp"
+#include <iostream>
+#include <vector>
 
 Heal::Heal(Player &player, bool unlocked) : player(player) {
   name = "Heal";
-  id = HEAL;
-  unlocked = false;
+  id = AbilityId::HEAL;
+  is_unlocked = unlocked;
+  heal_amount = 25.0;
 }
 
-void Heal::upgrade() { player.stats.health.current += 25; }
+void Heal::update(std::vector<Enemy> &enemies) {
+  std::cout << enemies[0].health.current << '\n';
+}
+
+void Heal::draw() {}
+
+void Heal::upgrade() { player.heal(heal_amount); }

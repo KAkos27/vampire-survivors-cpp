@@ -7,10 +7,11 @@ class Heal : public Ability {
 
 public:
   Heal(Player &player, bool unlocked);
-  // void update(std::vector<Enemy> &enemies) override;
-  // void draw() override;
+  void update(std::vector<Enemy> &enemies) override;
+  void draw() override;
   void upgrade() override;
 
 private:
   Player &player;
+  float heal_amount;
 };

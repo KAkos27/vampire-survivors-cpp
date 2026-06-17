@@ -15,7 +15,7 @@ void LevelUpEvent::set_event() {
   for (auto &ability : player.abilities) {
     bool is_low_level = ability->level < MAX_ABILITY_LEVEL;
 
-    if (is_low_level && ability->id != HEAL) {
+    if (is_low_level && ability->id != AbilityId::HEAL) {
       ability_candidate_ids.push_back(ability->id);
     }
   }
@@ -27,7 +27,7 @@ void LevelUpEvent::set_event() {
   }
 
   while (ability_candidate_ids.size() != 3) {
-    ability_candidate_ids.push_back(HEAL);
+    ability_candidate_ids.push_back(AbilityId::HEAL);
   }
 }
 
@@ -35,7 +35,6 @@ void LevelUpEvent::update_event() {
   for (std::size_t i = 0; i < ability_candidate_ids.size(); i++) {
     bool clicked = draw_button(i);
     if (clicked) {
-      Ability ability = player.get_ability(ability_candidate_ids[i]);
       player.upgrade_ability(ability_candidate_ids[i]);
       been_selected = true;
     }
@@ -44,9 +43,9 @@ void LevelUpEvent::update_event() {
 
 bool LevelUpEvent::draw_button(std::size_t index) {
   float gap = index * 50;
-  Ability ability = player.get_ability(ability_candidate_ids[index]);
-  const char *helper_text = ability.is_unlocked ? "upgrade" : "unlock";
+  Ability *ability = player.get_ability(ability_candidate_ids[index]);
+  const char *helper_text = ability->is_unlocked ? "upgrade" : "unlock";
 
   return GuiButton({40, 100 + gap, 720, 32},
-                   TextFormat("%s (%s)", ability.name, helper_text));
+                   TextFormat("%s (%s)", ability->name, helper_text));
 }

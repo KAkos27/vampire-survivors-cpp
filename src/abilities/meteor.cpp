@@ -6,7 +6,7 @@
 
 Meteor::Meteor(Player &player, bool unlocked) : player(player) {
   name = "Meteor";
-  id = METEOR;
+  id = AbilityId::METEOR;
   is_unlocked = unlocked;
   level = 1;
   stats = get_current_stats();

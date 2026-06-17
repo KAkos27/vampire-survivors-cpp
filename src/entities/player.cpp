@@ -101,6 +101,14 @@ void Player::take_damage(float amount) {
   }
 }
 
+void Player::heal(float amount) {
+  stats.health.current += amount;
+
+  if (stats.health.current > stats.health.max) {
+    stats.health.current = stats.health.max;
+  }
+}
+
 void Player::update_stats() {
   float multiplier = 1.0 + (experience.level - 1.0) * 0.1;
   float health_ratio = stats.health.current / stats.health.max;
@@ -119,12 +127,12 @@ void Player::upgrade_ability(AbilityId id) {
   }
 }
 
-Ability Player::get_ability(AbilityId id) {
+Ability *Player::get_ability(AbilityId id) {
   for (auto &ability : abilities) {
     if (ability->id == id) {
-      return *ability;
+      return ability.get();
     }
   }
 
-  return *abilities[0];
+  return abilities[0].get();
 }

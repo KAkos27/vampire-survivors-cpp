@@ -3,7 +3,7 @@
 #include "../entities/enemy.hpp"
 #include <vector>
 
-enum AbilityId {
+enum class AbilityId {
   BULLET,
   FIRE_AURA,
   METEOR,
@@ -19,8 +19,8 @@ public:
   AbilityId id;
   bool is_unlocked;
   int level;
-  virtual void update(std::vector<Enemy> &enemies) {};
-  virtual void draw() {};
-  virtual void upgrade() {};
+  virtual void update(std::vector<Enemy> &enemies) = 0;
+  virtual void draw() = 0;
+  virtual void upgrade() = 0;
   virtual ~Ability() = default;
 };
