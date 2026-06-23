@@ -16,14 +16,18 @@ add_executable(vampire_survivors
     src/ui/ray_gui_impl.cpp
 
     src/entities/player.cpp
+    src/entities/enemy.cpp
     src/entities/basic_enemy.cpp
     src/entities/ranged_enemy.cpp
+    src/entities/boss_enemy.cpp
     src/entities/enemy_spawner.cpp
 
     src/abilities/bullet.cpp
     src/abilities/fire_aura.cpp
     src/abilities/meteor.cpp
     src/abilities/heal.cpp
+
+    src/levels/base_level.cpp
 )
 
 target_link_libraries(vampire_survivors raylib)

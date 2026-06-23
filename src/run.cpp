@@ -1,12 +1,14 @@
 #include "run.hpp"
 #include "entities/enemy_spawner.hpp"
 #include "entities/player.hpp"
+#include "levels/base_level.hpp"
 #include "ui/level_up_event.hpp"
 #include <raylib.h>
 
-Run::Run()
-    : player(Player(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f)),
-      enemy_spawner(EnemySpawner(player)),
+Run::Run(BaseLevel level)
+    : run_level(level),
+      player(Player(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f)),
+      enemy_spawner(EnemySpawner(player, run_level)),
       level_up_event(LevelUpEvent(player)) {
 
   run_time = BASE_RUN_TIME;
@@ -39,7 +41,7 @@ void Run::update_run() {
     run_time -= delta;
 
     player.update_player(enemy_spawner.enemies);
-    enemy_spawner.update_enemies(run_time, camera);
+    enemy_spawner.update_enemies(run_time, camera, run_time);
     check_for_level_up();
   }
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../levels/base_level.hpp"
 #include "enemy.hpp"
 #include "player.hpp"
 #include <memory>
@@ -9,16 +10,19 @@
 class EnemySpawner {
 
 public:
-  EnemySpawner(Player &player);
+  EnemySpawner(Player &player, BaseLevel &level);
   std::vector<std::unique_ptr<Enemy>> enemies;
-  void update_enemies(float game_time, Camera2D camera);
+  void update_enemies(float game_time, Camera2D camera, float run_time);
   void draw_enemies();
 
 private:
   Player &player;
+  BaseLevel &level;
   float spawn_timer;
-  void spawn_enemies(float game_time, Camera2D camera);
+  void spawn_enemies(float game_time, Camera2D camera, float run_time);
   void separate_enemies();
   void delete_dead_enemies();
+  std::unique_ptr<Enemy> create_boss(BossID boss_id, float game_time,
+                                     Vector2 spawn_position);
   Vector2 get_random_position(Camera2D camera);
 };

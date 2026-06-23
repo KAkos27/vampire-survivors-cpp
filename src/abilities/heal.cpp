@@ -11,6 +11,9 @@ Heal::Heal(Player &player, bool unlocked) : player(player) {
 }
 
 void Heal::update(std::vector<std::unique_ptr<Enemy>> &enemies) {
+  if (enemies.empty()) {
+    return;
+  }
   std::cout << enemies[0]->health.current << '\n';
 }
 

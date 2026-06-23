@@ -2,6 +2,7 @@
 
 #include "entities/enemy_spawner.hpp"
 #include "entities/player.hpp"
+#include "levels/base_level.hpp"
 #include "ui/level_up_event.hpp"
 #include <raylib.h>
 
@@ -16,11 +17,12 @@ enum class RunState {
 class Run {
 
 public:
-  Run();
+  Run(BaseLevel level);
   ~Run();
   bool acitve();
 
 private:
+  BaseLevel run_level;
   Player player;
   EnemySpawner enemy_spawner;
   LevelUpEvent level_up_event;

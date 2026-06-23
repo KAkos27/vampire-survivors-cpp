@@ -1,4 +1,7 @@
 #include "enemy_spawner.hpp"
+#include "../entities/boss_enemy.hpp"
+#include "../levels/base_level.hpp"
+#include "../run.hpp"
 #include "../utils/random.hpp"
 #include "basic_enemy.hpp"
 #include "player.hpp"
@@ -9,14 +12,25 @@
 
 const float SPAWN_TIMER = 1;
 
-EnemySpawner::EnemySpawner(Player &player) : player(player) {
+EnemySpawner::EnemySpawner(Player &player, BaseLevel &level)
+    : player(player), level(level) {
   spawn_timer = SPAWN_TIMER;
 }
 
-void EnemySpawner::spawn_enemies(float game_time, Camera2D camera) {
+void EnemySpawner::spawn_enemies(float game_time, Camera2D camera,
+                                 float run_time) {
   float delta = GetFrameTime();
   spawn_timer -= delta;
+  float elapsed_time = BASE_RUN_TIME - run_time;
 
+  for (auto &boss_spawn : level.boss_spawns) {
+    if (!boss_spawn.spawned && elapsed_time >= boss_spawn.spawn_time) {
+      enemies.push_back(
+          create_boss(boss_spawn.id, game_time, get_random_position(camera)));
+
+      boss_spawn.spawned = true;
+    }
+  }
   if (spawn_timer <= 0) {
     enemies.push_back(std::make_unique<BasicEnemy>(
         &player, game_time, get_random_position(camera)));
@@ -61,8 +75,9 @@ Vector2 EnemySpawner::get_random_position(Camera2D camera) {
   }
 };
 
-void EnemySpawner::update_enemies(float game_time, Camera2D camera) {
-  spawn_enemies(game_time, camera);
+void EnemySpawner::update_enemies(float game_time, Camera2D camera,
+                                  float run_time) {
+  spawn_enemies(game_time, camera, run_time);
   delete_dead_enemies();
 
   for (auto &enemy : enemies) {
@@ -102,6 +117,16 @@ void EnemySpawner::separate_enemies() {
         }
       }
     }
+  }
+}
+
+std::unique_ptr<Enemy> EnemySpawner::create_boss(BossID boss_id,
+                                                 float game_time,
+                                                 Vector2 spawn_position) {
+  switch (boss_id) {
+  case BossID::BASE_BOSS:
+    TraceLog(LOG_INFO, "Boss spawned");
+    return std::make_unique<BossEnemy>(&player, game_time, spawn_position);
   }
 }
 

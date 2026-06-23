@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "levels/base_level.hpp"
 #include "raygui.h"
 #include <memory>
 #include <raylib.h>
@@ -33,7 +34,7 @@ void Game::run_game() {
   CloseWindow();
 }
 
-void Game::new_run() { run = std::make_unique<Run>(); }
+void Game::new_run() { run = std::make_unique<Run>(BaseLevel()); }
 
 void Game::handle_current_run() {
   if (state != GameState::RUN_STARTED) {
