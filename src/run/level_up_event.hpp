@@ -12,7 +12,6 @@ public:
   std::vector<AbilityId> ability_candidate_ids;
   bool completed;
   void set_event();
-  void update_event();
   void select_option(int index);
 
 private:

@@ -36,23 +36,3 @@ void LevelUpEvent::select_option(int i) {
   completed = true;
   player.leveled_up--;
 }
-
-// void LevelUpEvent::update_event() {
-//   for (std::size_t i = 0; i < ability_candidate_ids.size(); i++) {
-//     bool clicked = draw_button(i);
-//     if (clicked) {
-//       player.upgrade_ability(ability_candidate_ids[i]);
-//       completed = true;
-//       player.leveled_up--;
-//     }
-//   }
-// }
-//
-// bool LevelUpEvent::draw_button(std::size_t index) {
-//   float gap = index * 50;
-//   Ability *ability = player.get_ability(ability_candidate_ids[index]);
-//   const char *helper_text = ability->is_unlocked ? "upgrade" : "unlock";
-//
-//   return GuiButton({40, 100 + gap, 720, 32},
-//                    TextFormat("%s (%s)", ability->name, helper_text));
-// }
