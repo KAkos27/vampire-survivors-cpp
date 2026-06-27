@@ -1,10 +1,10 @@
 #include "enemy_spawner.hpp"
-#include "../entities/boss_enemy.hpp"
-#include "../levels/base_level.hpp"
-#include "../run/run.hpp"
-#include "../utils/random.hpp"
+#include "../../levels/base_level.hpp"
+#include "../../run/run.hpp"
+#include "../../utils/random.hpp"
+#include "../player.hpp"
 #include "basic_enemy.hpp"
-#include "player.hpp"
+#include "boss_enemy.hpp"
 #include "ranged_enemy.hpp"
 #include <memory>
 #include <raylib.h>

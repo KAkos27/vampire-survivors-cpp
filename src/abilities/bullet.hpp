@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../entities/enemy.hpp"
+#include "../entities/enemies/enemy.hpp"
 #include "../entities/player.hpp"
 #include "ability.hpp"
 #include <cstddef>

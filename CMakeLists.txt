@@ -18,11 +18,11 @@ add_executable(vampire_survivors
     src/ui/ray_gui_impl.cpp
 
     src/entities/player.cpp
-    src/entities/enemy.cpp
-    src/entities/basic_enemy.cpp
-    src/entities/ranged_enemy.cpp
-    src/entities/boss_enemy.cpp
-    src/entities/enemy_spawner.cpp
+    src/entities/enemies/enemy.cpp
+    src/entities/enemies/basic_enemy.cpp
+    src/entities/enemies/ranged_enemy.cpp
+    src/entities/enemies/boss_enemy.cpp
+    src/entities/enemies/enemy_spawner.cpp
 
     src/abilities/bullet.cpp
     src/abilities/fire_aura.cpp

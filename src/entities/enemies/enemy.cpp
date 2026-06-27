@@ -1,6 +1,6 @@
 #include "enemy.hpp"
-#include "../run/run.hpp"
-#include "player.hpp"
+#include "../../run/run.hpp"
+#include "../player.hpp"
 #include <raymath.h>
 
 const float ATTACK_TIMER = 1;

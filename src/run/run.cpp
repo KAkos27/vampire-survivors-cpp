@@ -1,5 +1,5 @@
 #include "run.hpp"
-#include "../entities/enemy_spawner.hpp"
+#include "../entities/enemies/enemy_spawner.hpp"
 #include "../entities/player.hpp"
 #include "../levels/base_level.hpp"
 #include "level_up_event.hpp"

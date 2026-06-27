@@ -1,6 +1,6 @@
 #include "ranged_enemy.hpp"
+#include "../player.hpp"
 #include "enemy.hpp"
-#include "player.hpp"
 #include <raylib.h>
 #include <raymath.h>
 

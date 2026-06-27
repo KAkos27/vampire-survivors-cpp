@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../entities/enemy_spawner.hpp"
+#include "../entities/enemies/enemy_spawner.hpp"
 #include "../entities/player.hpp"
 #include "../levels/base_level.hpp"
 #include "../ui/level_up_view.hpp"

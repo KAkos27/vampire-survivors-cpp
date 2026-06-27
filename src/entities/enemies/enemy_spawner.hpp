@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../levels/base_level.hpp"
+#include "../../levels/base_level.hpp"
+#include "../player.hpp"
 #include "enemy.hpp"
-#include "player.hpp"
 #include <memory>
 #include <raylib.h>
 #include <vector>

@@ -3,7 +3,7 @@
 #include "../abilities/fire_aura.hpp"
 #include "../abilities/heal.hpp"
 #include "../abilities/meteor.hpp"
-#include "enemy.hpp"
+#include "enemies/enemy.hpp"
 #include <memory>
 #include <raylib.h>
 #include <raymath.h>

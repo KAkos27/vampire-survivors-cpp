@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../entities/enemy.hpp"
+#include "../entities/enemies/enemy.hpp"
 #include <vector>
 
 enum class AbilityId {
