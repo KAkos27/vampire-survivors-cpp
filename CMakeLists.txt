@@ -8,11 +8,13 @@ find_package(raylib REQUIRED)
 add_executable(vampire_survivors
     src/main.cpp
     src/game.cpp
-    src/run.cpp
+
+    src/run/run.cpp
+    src/run/level_up_event.cpp
 
     src/utils/random.cpp
 
-    src/ui/level_up_event.cpp
+    src/ui/level_up_view.cpp
     src/ui/ray_gui_impl.cpp
 
     src/entities/player.cpp

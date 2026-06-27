@@ -1,9 +1,10 @@
 #pragma once
 
-#include "entities/enemy_spawner.hpp"
-#include "entities/player.hpp"
-#include "levels/base_level.hpp"
-#include "ui/level_up_event.hpp"
+#include "../entities/enemy_spawner.hpp"
+#include "../entities/player.hpp"
+#include "../levels/base_level.hpp"
+#include "../ui/level_up_view.hpp"
+#include "level_up_event.hpp"
 #include <raylib.h>
 
 const float BASE_RUN_TIME = 30 * 60;
@@ -26,6 +27,7 @@ private:
   Player player;
   EnemySpawner enemy_spawner;
   LevelUpEvent level_up_event;
+  LevelUpView level_up_view;
   Camera2D camera;
   RunState state;
   Texture2D background_tile;

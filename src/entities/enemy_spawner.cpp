@@ -1,7 +1,7 @@
 #include "enemy_spawner.hpp"
 #include "../entities/boss_enemy.hpp"
 #include "../levels/base_level.hpp"
-#include "../run.hpp"
+#include "../run/run.hpp"
 #include "../utils/random.hpp"
 #include "basic_enemy.hpp"
 #include "player.hpp"

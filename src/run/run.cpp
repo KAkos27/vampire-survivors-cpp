@@ -1,8 +1,8 @@
 #include "run.hpp"
-#include "entities/enemy_spawner.hpp"
-#include "entities/player.hpp"
-#include "levels/base_level.hpp"
-#include "ui/level_up_event.hpp"
+#include "../entities/enemy_spawner.hpp"
+#include "../entities/player.hpp"
+#include "../levels/base_level.hpp"
+#include "level_up_event.hpp"
 #include <raylib.h>
 
 Run::Run(BaseLevel level)
@@ -10,6 +10,8 @@ Run::Run(BaseLevel level)
       player(Player(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f)),
       enemy_spawner(EnemySpawner(player, run_level)),
       level_up_event(LevelUpEvent(player)) {
+
+  level_up_view = LevelUpView();
 
   run_time = BASE_RUN_TIME;
   state = RunState::PLAYING;
@@ -55,9 +57,13 @@ void Run::check_for_level_up() {
 
 void Run::update_level_up_event() {
   if (state == RunState::LEVEL_UP) {
-    level_up_event.update_event();
+    int index = level_up_view.update_view(level_up_event, player);
 
-    if (level_up_event.been_selected) {
+    if (index != -1) {
+      level_up_event.select_option(index);
+    }
+
+    if (level_up_event.completed) {
       state = RunState::PLAYING;
     }
   }
