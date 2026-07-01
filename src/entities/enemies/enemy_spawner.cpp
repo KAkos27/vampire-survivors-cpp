@@ -78,18 +78,32 @@ Vector2 EnemySpawner::get_random_position(Camera2D camera) {
 void EnemySpawner::update_enemies(float game_time, Camera2D camera,
                                   float run_time) {
   spawn_enemies(game_time, camera, run_time);
-  delete_dead_enemies();
 
   for (auto &enemy : enemies) {
     enemy->update_enemy();
+
+    if (!enemy->alive) {
+      auto item = enemy->roll_drop();
+      if (item) {
+        TraceLog(LOG_INFO, item->name);
+        dropped_items.push_back(std::move(item));
+      } else {
+        TraceLog(LOG_INFO, "Nothing was dropped");
+      }
+    }
   }
 
   separate_enemies();
+  delete_dead_enemies();
 }
 
 void EnemySpawner::draw_enemies() {
   for (auto &enemy : enemies) {
     enemy->draw_enemy();
+  }
+
+  for (auto &item : dropped_items) {
+    item->draw_item();
   }
 }
 

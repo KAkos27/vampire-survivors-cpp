@@ -1,6 +1,11 @@
 #include "enemy.hpp"
 #include "../../run/run.hpp"
+#include "../../utils/random.hpp"
 #include "../player.hpp"
+#include <cstddef>
+#include <memory>
+#include <optional>
+#include <raylib.h>
 #include <raymath.h>
 
 const float ATTACK_TIMER = 1;
@@ -14,6 +19,10 @@ Enemy::Enemy(Player *player, float game_time, Vector2 spawn_position)
   hurt = false;
   hurt_timer = HURT_TIMER;
   attack_timer = ATTACK_TIMER;
+
+  drops.push_back({std::make_unique<SomeItem>(Vector2Zero(), "Some item"), 50});
+  drops.push_back(
+      {std::make_unique<SomeOtherItem>(Vector2Zero(), "Some other item"), 50});
 }
 
 void Enemy::draw_enemy() { DrawCircleV(position, collider_radius, color); }
@@ -26,6 +35,21 @@ void Enemy::take_damage(float damage) {
     alive = false;
     player->gain_xp(xp_drop);
   }
+}
+
+std::unique_ptr<Item> Enemy::roll_drop() {
+  float roll = random_float(0, 100);
+  float cumulative = 0;
+
+  for (auto &drop : drops) {
+    cumulative += drop.drop_chance;
+
+    if (roll < cumulative) {
+      return drop.item->clone(position);
+    }
+  }
+
+  return nullptr;
 }
 
 void Enemy::check_for_player_hit() {

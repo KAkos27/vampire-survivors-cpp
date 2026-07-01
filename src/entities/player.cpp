@@ -12,6 +12,7 @@
 const float BASE_HEALTH = 200;
 const float BASE_SPEED = 100;
 const float BASE_DAMAGE = 30;
+const float BASE_PICKUP_RANGE = 30;
 
 Player::Player(float x, float y) {
   init_stats(BASE_HEALTH, BASE_DAMAGE, BASE_SPEED);
@@ -21,6 +22,7 @@ Player::Player(float x, float y) {
   experience = {1, 0, 200};
   leveled_up = 0;
   is_alive = true;
+  pickup_range = BASE_PICKUP_RANGE;
 
   abilities.push_back(std::make_unique<Heal>(*this, false));
 

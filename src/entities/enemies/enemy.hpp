@@ -1,8 +1,17 @@
 #pragma once
 
+#include "../items/item.hpp"
+#include <memory>
+#include <optional>
 #include <raylib.h>
+#include <vector>
 
 class Player;
+
+struct Drop {
+  std::unique_ptr<Item> item;
+  float drop_chance;
+};
 
 struct EnemyHealth {
   float current;
@@ -16,6 +25,7 @@ public:
 
   Vector2 position;
   EnemyHealth health;
+  std::vector<Drop> drops;
   bool alive;
   float collider_radius;
   float xp_drop;
@@ -24,6 +34,8 @@ public:
   virtual void draw_enemy();
   virtual void take_damage(float damage);
   virtual ~Enemy() = default;
+
+  std::unique_ptr<Item> roll_drop();
 
 protected:
   Player *player;

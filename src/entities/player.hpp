@@ -48,6 +48,7 @@ public:
   Ability *get_ability(AbilityId);
 
 private:
+  float pickup_range;
   void set_input_position();
   void update_abilities(std::vector<std::unique_ptr<Enemy>> &enemies);
   void init_stats(float health, float damage, float speed);

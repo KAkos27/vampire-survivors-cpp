@@ -23,6 +23,7 @@ add_executable(vampire_survivors
     src/entities/enemies/ranged_enemy.cpp
     src/entities/enemies/boss_enemy.cpp
     src/entities/enemies/enemy_spawner.cpp
+    src/entities/items/item.cpp
 
     src/abilities/bullet.cpp
     src/abilities/fire_aura.cpp

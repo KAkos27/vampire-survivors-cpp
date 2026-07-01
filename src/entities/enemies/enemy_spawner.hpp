@@ -12,6 +12,7 @@ class EnemySpawner {
 public:
   EnemySpawner(Player &player, BaseLevel &level);
   std::vector<std::unique_ptr<Enemy>> enemies;
+  std::vector<std::unique_ptr<Item>> dropped_items;
   void update_enemies(float game_time, Camera2D camera, float run_time);
   void draw_enemies();
 
