@@ -1,10 +1,11 @@
 #include "enemy.hpp"
 #include "../../run/run.hpp"
 #include "../../utils/random.hpp"
+#include "../items/ring_of_health.hpp"
+#include "../items/ring_of_speed.hpp"
 #include "../player.hpp"
 #include <cstddef>
 #include <memory>
-#include <optional>
 #include <raylib.h>
 #include <raymath.h>
 
@@ -20,9 +21,8 @@ Enemy::Enemy(Player *player, float game_time, Vector2 spawn_position)
   hurt_timer = HURT_TIMER;
   attack_timer = ATTACK_TIMER;
 
-  drops.push_back({std::make_unique<SomeItem>(Vector2Zero(), "Some item"), 50});
-  drops.push_back(
-      {std::make_unique<SomeOtherItem>(Vector2Zero(), "Some other item"), 50});
+  drops.push_back({std::make_unique<RingOfHealth>(Vector2Zero()), 50});
+  drops.push_back({std::make_unique<RingOfSpeed>(Vector2Zero()), 50});
 }
 
 void Enemy::draw_enemy() { DrawCircleV(position, collider_radius, color); }

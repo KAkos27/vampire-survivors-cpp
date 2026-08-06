@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../abilities/ability.hpp"
+#include "inventory.hpp"
 #include <cstddef>
 #include <memory>
 #include <raylib.h>
@@ -33,6 +34,7 @@ public:
   Player(float x, float y);
   Vector2 position;
   Experience experience;
+  Inventory inventory;
   Stats stats;
   std::vector<std::unique_ptr<Ability>> abilities;
   std::size_t leveled_up;
